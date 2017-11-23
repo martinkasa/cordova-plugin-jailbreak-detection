@@ -20,5 +20,7 @@
         </config-file>
         <header-file src="src/ios/JailbreakDetection.h" />
         <source-file src="src/ios/JailbreakDetection.m" />
+        <header-file src="src/ios/JBDetect.h" />
+        <source-file src="src/ios/JBDetect.m" />
     </platform>
 </plugin>
