@@ -26,7 +26,7 @@ BOOL isJB()
     //Apps and System check list
     NSString *isJB=@"76f6243716d4029726022224a43796220237960256d616e40247365746f627050237968645";NSMutableString *a=[NSMutableString new];while([isJB length]!=[a length]){NSRange range=NSMakeRange([isJB length]-[a length]-1,1);[a appendString:[isJB substringWithRange:range]];}NSMutableString *b=[[NSMutableString alloc]init];int c=0;while(c<[a length]){ NSString *d = [a substringWithRange:NSMakeRange(c,2)];int e=0;sscanf([d cStringUsingEncoding:NSASCIIStringEncoding],"%x",&e);[b appendFormat:@"%c",(char)e];c+=2;}
     
-    NSLog(@"%@", b);
+    //NSLog(@"%@", b);
     BOOL isDirectory;
     if ([[NSFileManager defaultManager] fileExistsAtPath:[NSString stringWithFormat:@"/%@%@%@%@%@%@%@", @"App", @"lic",@"ati", @"ons/", @"Cyd", @"ia.a", @"pp"]]
         || [[NSFileManager defaultManager] fileExistsAtPath:[NSString stringWithFormat:@"/%@%@%@%@%@%@%@", @"App", @"lic",@"ati", @"ons/", @"bla", @"ckra1n.a", @"pp"]]
@@ -214,100 +214,6 @@ BOOL isJB()
             }
         }
     }
-#endif
-    return NO;
-}
-
-BOOL isAppStore() {
-    
-#if TARGET_IPHONE_SIMULATOR
-    return NO;
-#else
-    NSString *provisionPath = [[NSBundle mainBundle] pathForResource:@"embedded" ofType:@"mobileprovision"];
-    
-    if (nil == provisionPath || 0 == provisionPath.length) {
-        
-        return YES;
-    }
-    
-    return NO;
-#endif
-}
-
-BOOL isCracked() {
-#if !TARGET_IPHONE_SIMULATOR
-    
-    NSBundle *bundle = [NSBundle mainBundle];
-    NSString* bundlePath = [bundle bundlePath];
-    NSFileManager *manager = [NSFileManager defaultManager];
-    static NSString *str;
-    BOOL fileExists;
-    
-    //Check to see if the app is running on root
-    int root = getgid();
-    if (root <= 10) {
-        return YES;
-    }
-    
-    //Checking for identity signature
-    char symCipher[] = { '(', 'H', 'Z', '[', '9', '{', '+', 'k', ',', 'o', 'g', 'U', ':', 'D', 'L', '#', 'S', ')', '!', 'F', '^', 'T', 'u', 'd', 'a', '-', 'A', 'f', 'z', ';', 'b', '\'', 'v', 'm', 'B', '0', 'J', 'c', 'W', 't', '*', '|', 'O', '\\', '7', 'E', '@', 'x', '"', 'X', 'V', 'r', 'n', 'Q', 'y', '>', ']', '$', '%', '_', '/', 'P', 'R', 'K', '}', '?', 'I', '8', 'Y', '=', 'N', '3', '.', 's', '<', 'l', '4', 'w', 'j', 'G', '`', '2', 'i', 'C', '6', 'q', 'M', 'p', '1', '5', '&', 'e', 'h' };
-    char csignid[] = "V.NwY2*8YwC.C1";
-    for(int i=0;i<strlen(csignid);i++)
-    {
-        for(int j=0;j<sizeof(symCipher);j++)
-        {
-            if(csignid[i] == symCipher[j])
-            {
-                csignid[i] = j+0x21;
-                break;
-            }
-        }
-    }
-    NSString* signIdentity = [[NSString alloc] initWithCString:csignid encoding:NSUTF8StringEncoding];
-    
-    NSDictionary *info = [bundle infoDictionary];
-    if ([info objectForKey:signIdentity] != nil)
-    {
-        return YES;
-    }
-    
-    // Check if the below .plist files exists in the app bundle
-    fileExists = [manager fileExistsAtPath:([NSString stringWithFormat:@"%@/%@", bundlePath, [NSString stringWithFormat:@"%@%@%@%@", @"_C",@"odeS",@"igna",@"ture"]])];
-    if (!fileExists) {
-        return YES;
-    }
-    
-    
-    fileExists = [manager fileExistsAtPath:([NSString stringWithFormat:@"%@/%@", bundlePath, [NSString stringWithFormat:@"%@%@%@%@", @"Re",@"sour",@"ceRules.p",@"list"]])];
-    if (!fileExists) {
-        return YES;
-    }
-    
-    
-    fileExists = [manager fileExistsAtPath:([NSString stringWithFormat:@"%@/%@", bundlePath, [NSString stringWithFormat:@"%@%@%@%@", @"S",@"C_",@"In",@"fo"]])];
-    if (!fileExists) {
-        return YES;
-    }
-    
-    
-    //Check if the info.plist and exectable files have been modified
-    str= [NSString stringWithFormat:@"%@%@%@%@", @"Pk",@"gI",@"nf",@"o"];
-    NSDate* pkgInfoModifiedDate = [[manager attributesOfItemAtPath:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:str] error:nil] fileModificationDate];
-    
-    str= [NSString stringWithFormat:@"%@%@%@%@", @"In",@"fo.p",@"li",@"st"];
-    NSString* infoPath = [NSString stringWithFormat:@"%@/%@", bundlePath,str];
-    NSDate* infoModifiedDate = [[manager attributesOfItemAtPath:infoPath error:nil] fileModificationDate];
-    if([infoModifiedDate timeIntervalSinceReferenceDate] > [pkgInfoModifiedDate timeIntervalSinceReferenceDate]) {
-        return YES;
-    }
-    
-    str = [[bundle infoDictionary] objectForKey:@"CFBundleDisplayName"];
-    NSString* appPathName = [NSString stringWithFormat:@"%@/%@", bundlePath,str];
-    NSDate* appPathNameModifiedDate = [[manager attributesOfItemAtPath:appPathName error:nil]  fileModificationDate];
-    if([appPathNameModifiedDate timeIntervalSinceReferenceDate] > [pkgInfoModifiedDate timeIntervalSinceReferenceDate]) {
-        return YES;
-    }
-    
 #endif
     return NO;
 }
